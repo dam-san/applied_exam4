@@ -1,0 +1,61 @@
+<table class='table table-hover table-inverse'>
+
+
+  <thead>
+
+
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Opinion</th>
+      <th colspan="3"></th>
+    </tr>
+
+
+  </thead>
+
+  <tbody>
+    <% books.each do |book| %>
+      <% if book.user_id == user.id %>
+
+        <tr>
+          <td><%= link_to user_path(book.user) do %>
+            <%= attachment_image_tag(book.user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg") %>
+            <% end %>
+          </td>
+          <td><%= link_to book.title, book_path(book), class: "book_#{book.id}" %></td>
+          <td><%= book.body %></td>
+          <td>
+            <%# if book.user_id != current_user.id %>
+
+                <% if book.favorited_by?(current_user)%>
+                  <%= link_to book_favorites_path(book), method: :delete do %>
+                  ♥<%= book.favorites.count %>いいね
+                  <% end %>
+                <% else %>
+                  <%= link_to book_favorites_path(book), method: :post do %>
+                  ♡<%= book.favorites.count %>いいね
+                  <% end %>
+                <% end %>
+
+            <%# else%>
+                <!--以下は、自分の投稿には、いいね　できない記述-->
+              <% if false %>
+
+                <% if book.favorites.count != 0 %>
+                  ♥<%= book.favorites.count %>いいね
+                <% else %>
+                  ♡<%= book.favorites.count %>いいね
+                <% end %>
+
+              <% end %>
+            <%# end %>
+
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+
+
+</table>
